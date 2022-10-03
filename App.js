@@ -20,7 +20,7 @@ class Inputs extends Component {
    handleWeight = (text) => {
       this.setState({ weight: text })
    }
-   
+
    calculate = (height, weight) => {
       //calculation
       var result = (parseFloat(weight)*10000)/(parseFloat(height)*parseFloat(height));
@@ -47,7 +47,7 @@ class Inputs extends Component {
    render() {
       return (
          <View style = {styles.container}>
-<Text style={styles.title}>BMI MY Calculator</Text>
+<Text style={styles.title}>BMI Calculator</Text>
             
             <Text  style = {styles.label}>Height</Text>
             <TextInput style = {styles.input}
