@@ -1,117 +1,124 @@
-/**
- * Sample React Native App
- * https://github.com/facebook/react-native
- *
- * @format
- * @flow strict-local
- */
-//git test
-import React from 'react';
-import type {Node} from 'react';
-import {
-  SafeAreaView,
-  ScrollView,
-  StatusBar,
-  StyleSheet,
-  Text,
-  useColorScheme,
-  View,
-} from 'react-native';
+//Assignemnt 1 submission by Ajay Shrivastav (301284668)
+//BodyMassIndex Calculator
 
-import {
-  Colors,
-  DebugInstructions,
-  Header,
-  LearnMoreLinks,
-  ReloadInstructions,
-} from 'react-native/Libraries/NewAppScreen';
 
-/* $FlowFixMe[missing-local-annot] The type annotation(s) required by Flow's
- * LTI update could not be added via codemod */
-const Section = ({children, title}): Node => {
-  const isDarkMode = useColorScheme() === 'dark';
-  return (
-    <View style={styles.sectionContainer}>
-      <Text
-        style={[
-          styles.sectionTitle,
-          {
-            color: isDarkMode ? Colors.white : Colors.black,
-          },
-        ]}>
-        {title}
-      </Text>
-      <Text
-        style={[
-          styles.sectionDescription,
-          {
-            color: isDarkMode ? Colors.light : Colors.dark,
-          },
-        ]}>
-        {children}
-      </Text>
-    </View>
-  );
-};
+import React, { Component } from 'react'
+import { View, Text, TouchableOpacity, TextInput, StyleSheet } from 'react-native'
+class Inputs extends Component {
 
-const App: () => Node = () => {
-  const isDarkMode = useColorScheme() === 'dark';
 
-  const backgroundStyle = {
-    backgroundColor: isDarkMode ? Colors.darker : Colors.lighter,
-  };
+   state = {
+      height: '',
+      weight: '',
+      bmi: '',
+      BmiResult: '',
+   }
 
-  return (
-    <SafeAreaView style={backgroundStyle}>
-      <StatusBar
-        barStyle={isDarkMode ? 'light-content' : 'dark-content'}
-        backgroundColor={backgroundStyle.backgroundColor}
-      />
-      <ScrollView
-        contentInsetAdjustmentBehavior="automatic"
-        style={backgroundStyle}>
-        <Header />
-        <View
-          style={{
-            backgroundColor: isDarkMode ? Colors.black : Colors.white,
-          }}>
-          <Section title="Step One">
-            Edit <Text style={styles.highlight}>App.js</Text> to change this
-            screen and then come back to see your edits.
-          </Section>
-          <Section title="See Your Changes">
-            <ReloadInstructions />
-          </Section>
-          <Section title="Debug">
-            <DebugInstructions />
-          </Section>
-          <Section title="Learn More">
-            Read the docs to discover what to do next:
-          </Section>
-          <LearnMoreLinks />
-        </View>
-      </ScrollView>
-    </SafeAreaView>
-  );
-};
-
+   handleHeight = (text) => {
+      this.setState({ height: text })
+   }
+   handleWeight = (text) => {
+      this.setState({ weight: text })
+   }
+   
+   calculate = (height, weight) => {
+      //calculation
+      var result = (parseFloat(weight)*10000)/(parseFloat(height)*parseFloat(height));
+      result = result.toFixed(2);
+      //display result
+      this.setState({ bmi: result })
+      if(result<18.5){
+         this.setState({BmiResult:'Underweight'})
+      }
+      else if(result>=18.5&&result<25){
+         this.setState({BmiResult:'Normal weight'})
+      }
+      else if(result>=25&&result<30){
+         this.setState({BmiResult:'Overweight'})
+      }
+      else if(result>=30){
+         this.setState({BmiResult:'Obese'})
+      }
+      else{
+         alert('Incorrect Input!');
+         this.setState({BmiResult:''})
+      }
+   }
+   render() {
+      return (
+         <View style = {styles.container}>
+<Text style={styles.title}>BMI MY Calculator</Text>
+            
+            <Text  style = {styles.label}>Height</Text>
+            <TextInput style = {styles.input}
+               underlineColorAndroid = "transparent"
+               placeholder = "Height (Cm)"
+               autoCapitalize = "none"
+               onChangeText = {this.handleHeight}/>
+<Text  style = {styles.label}>Weight</Text>
+            <TextInput style = {styles.input}
+               underlineColorAndroid = "transparent"
+               placeholder = "Weight (Kg)"
+               autoCapitalize = "none"
+               onChangeText = {this.handleWeight}/>
+            
+            <TouchableOpacity
+               style = {styles.submitButton}
+               onPress = {
+                  () => this.calculate(this.state.height, this.state.weight)
+               }>
+               <Text style = {styles.submitButtonText}> Calculate </Text>
+            </TouchableOpacity>
+<Text style = {styles.output}>{this.state.bmi}</Text>
+            <Text style = {styles.resultText}>{this.state.BmiResult}</Text>
+</View>
+      )
+   }
+}
+export default Inputs
 const styles = StyleSheet.create({
-  sectionContainer: {
-    marginTop: 32,
-    paddingHorizontal: 24,
-  },
-  sectionTitle: {
-    fontSize: 24,
-    fontWeight: '600',
-  },
-  sectionDescription: {
-    marginTop: 8,
-    fontSize: 18,
-    fontWeight: '400',
-  },
-  highlight: {
-    fontWeight: '700',
-  },
-});
-
-export default App;
+   container: {
+      paddingTop: 23,
+      //padding: 10,
+      
+   },
+   input: {
+      margin: 15,
+      height: 40,
+      borderWidth: 1,
+      padding: 10,
+   },
+   submitButton: {
+      backgroundColor: '#ff6666',
+      padding: 10,
+      margin: 15,
+      height: 40,
+   },
+   submitButtonText:{
+      textAlign: "center",
+      color: 'white',
+     // fontWeight:"bold",
+      fontSize: 18,
+   },
+   output:{
+      textAlign: "center",
+      fontSize: 30,
+   },
+   title:{
+      paddingTop:30,
+      paddingBottom:10,
+      textAlign: "center",
+      fontSize: 30,
+      fontWeight:"bold",
+   },
+   resultText:{
+      paddingTop:20,
+      paddingBottom:10,
+      textAlign: "center",
+      fontSize: 30,
+      color: 'blue'
+   },
+   label:{
+      marginLeft: 15,
+   }
+})
